@@ -152,7 +152,7 @@ El juego soporta dos proveedores para generar imágenes de retratos:
 **Desventajas:**
 - ⚠️ Requiere GPU potente para tiempos razonables
 - ⚠️ Prompts deben estar muy optimizados para pixel art
-- ⚠️ Calidad puede variar más que con OpenAI
+- ⚠️ Calidad bastante mala y sin homogeneidad
 
 #### **OpenAI DALL-E (Cloud)**
 - **Modelo**: DALL-E 3
@@ -354,6 +354,8 @@ PortraitSpec(
 #### **6. Sprite Generator Agent** 🎨
 **Archivo:** `app/Agent/agent_sprite_generator.py`
 
+<< En proceso >>
+
 **Función:** Genera sprites usando IA (actualmente no activo por defecto).
 
 **Métodos:**
@@ -546,96 +548,7 @@ Si la generación con IA falla o está desactivada, el juego usa automáticament
 *Algunas de las imágenes de test que se usan cuando no se genera con IA*
 
 ---
-
-## ✅ **Problemas Solucionados**
-
-### **1. Sprites PNG Reales Cargados** ✅
-**Problema Original:** Los sprites de `sample_character` no se cargaban, mostrando solo rectángulos de colores.
-
-**Solución Implementada:**
-- Mapeo mejorado de nombres de archivo PNG a tipos de sprite
-- Búsqueda de archivos tanto `.png` como `.txt`
-- Sprites forzados a `sample_character` para ambos personajes
-- Sprites placeholder para archivos `.txt`
-
-### **2. Físicas Mejoradas y Controladas** ✅
-**Problema Original:** El juego era muy lento y la gravedad permitía "volar".
-
-**Solución Implementada:**
-- FPS forzados a 60 para consistencia
-- Delta time limitado para evitar saltos grandes
-- Constantes físicas ajustadas (GRAVITY: 0.8, FRICTION: 0.85, MAX_SPEED: 8.0, JUMP_FORCE: -15.0)
-
-### **3. Error de Fondo Corregido** ✅
-**Problema Original:** `argument 1 must be pygame.surface.Surface, not str`
-
-**Solución Implementada:**
-- Validación de carga de fondos en `DebugAssetsManager`
-- Manejo de errores cuando no se puede cargar un fondo
-- Fallback seguro cuando el fondo es `None`
-
-### **4. Controles WASD Implementados** ✅
-**Problema Original:** Solo funcionaban las flechas del teclado.
-
-**Solución Implementada:**
-- Configuración en `settings.json` para controles personalizables
-- Soporte para WASD y flechas simultáneamente
-
-### **5. IA del Enemigo Corregida** ✅
-**Problema Original:** `AttributeError: 'Character' object has no attribute 'attack'`
-
-**Solución Implementada:**
-- Corrección de atributo de `enemy.attack` a `enemy.damage`
-- IA funcional sin errores de atributos
-
-### **6. Generación de Imágenes con IA** ✅ 🆕
-**Problema Original:** Imágenes generadas eran ruido/estático sin reconocer personajes.
-
-**Solución Implementada:**
-- Modelo mejorado: De `runwayml/stable-diffusion-v1-5` a `stabilityai/sdxl-turbo`
-- Prompts optimizados para pixel art con keywords específicas
-- Parámetros ajustados: Steps reducidos a 8, guidance_scale optimizado
-- Negative prompts mejorados para evitar estilos realistas
-
-### **7. Structured Output con Ollama** ✅ 🆕
-**Problema Original:** Ollama devolvía el esquema JSON en lugar de los datos.
-
-**Solución Implementada:**
-- Prompts mejorados para que Ollama genere datos, no esquemas
-- Logging mejorado para debugging de respuestas
-- Detección automática cuando se devuelve el esquema en lugar de datos
-
----
-
-## 📝 **Próximos Pasos Sugeridos:**
-
-1. **Probar la pantalla de configuración** seleccionando `[4] Settings` desde el menú
-2. **Configurar generación de IA** según preferencias
-3. **Verificar generación de imágenes** con SDXL Turbo
-4. **Revisar trazas en LangSmith** para debugging
-5. **Ajustar prompts** si las imágenes no son del estilo deseado
-6. **Probar diferentes modelos** de Ollama si se desea
-
----
-
-## 📁 **Archivos Modificados/Agregados:**
-
-### **Nuevos Archivos:**
-- `app/UI/scenes/settings_scene.py` - Pantalla de configuración de IA
-- `app/Agent/prompts/prompts_image_renderer.py` - Prompts optimizados para pixel art
-- `app/Agent/Utils/langsmith_config.py` - Configuración de LangSmith
-
-### **Archivos Modificados:**
-- `app/UI/scenes/menu_scene.py` - Agregada opción [4] Settings
-- `app/UI/scenes/__init__.py` - Registrada nueva escena SettingsScene
-- `app/Agent/image_providers.py` - Mejoras para SDXL Turbo y pixel art
-- `app/Agent/Utils/ollama_provider.py` - Mejoras en structured output
-- `settings/settings.json` - Configuración de SDXL Turbo y Ollama
-- `app/UI/scenes/char_select_scene.py` - Integración con generación de IA
-- `app/Agent/agent_art_director.py` - Mejoras en generación de briefs
-
----
-
+ 
 ## 🔧 **Instalación y Configuración:**
 
 ### **Requisitos:**
@@ -668,4 +581,4 @@ uv pip install -r requirements.txt
 
 ---
 
-**¡Disfruta del juego con IA, sprites reales y físicas mejoradas!** 🎮🎨🤖
+**¡Disfruta del juego con IA!** 🎮🎨🤖
