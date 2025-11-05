@@ -12,128 +12,21 @@
 
 ## 🚀 **Funcionalidades Principales**
 
-### **1. Sprites PNG Reales Cargados** ✅
-**Problema Original:** Los sprites de `sample_character` no se cargaban, mostrando solo rectángulos de colores.
+SimpleFight v3 es un juego de combate 2D con generación de contenido mediante IA. El juego incluye:
 
-**Solución Implementada:**
-- **Mapeo mejorado** de nombres de archivo PNG a tipos de sprite
-- **Búsqueda de archivos** tanto `.png` como `.txt`
-- **Sprites forzados** a `sample_character` para ambos personajes
-- **Sprites placeholder** para archivos `.txt`
+- ✅ **Sistema de combate** con físicas realistas y controles responsivos
+- ✅ **Generación de personajes** con IA (Ollama/OpenAI)
+- ✅ **Generación de imágenes** con Stable Diffusion SDXL Turbo
+- ✅ **Narrativa personalizada** generada por IA
+- ✅ **Pantalla de configuración** para ajustar opciones de IA
+- ✅ **Trazabilidad completa** con LangSmith
+- ✅ **Sistema de fallback** automático a assets de test
 
-**Archivos PNG Detectados:**
-- `attack.png`, `Attack2.png`, `Attack3.png` → "attack"
-- `Death.png`, `Fall.png` → "death"
-- `idle.png` → "idle"
-- `jump.png` → "jump"
-- `Run.png` → "walk"
-- `Take hit.png` → "hurt"
-- `warrior.png` → "idle" (sprite por defecto)
-
-### **2. Físicas Mejoradas y Controladas** ✅
-**Problema Original:** El juego era muy lento y la gravedad permitía "volar".
-
-**Solución Implementada:**
-- **FPS forzados a 60** para consistencia
-- **Delta time limitado** para evitar saltos grandes
-- **Constantes físicas ajustadas** para mejor control
-
-**Constantes Físicas Corregidas:**
-```python
-# ANTES (muy rápido y flotante)
-GRAVITY: float = 1.5
-FRICTION: float = 0.7
-MAX_SPEED: float = 12.0
-JUMP_FORCE: float = -20.0
-
-# AHORA (controlado y realista)
-GRAVITY: float = 0.8      # Reducido para mejor control
-FRICTION: float = 0.85    # Aumentado para menos deslizamiento
-MAX_SPEED: float = 8.0    # Reducido para movimiento más controlado
-JUMP_FORCE: float = -15.0 # Reducido para saltos más realistas
-```
-
-### **3. Error de Fondo Corregido** ✅
-**Problema Original:** `argument 1 must be pygame.surface.Surface, not str`
-
-**Solución Implementada:**
-- **Validación de carga** de fondos en `DebugAssetsManager`
-- **Manejo de errores** cuando no se puede cargar un fondo
-- **Fallback seguro** cuando el fondo es `None`
-
-### **4. Controles WASD Implementados** ✅
-**Problema Original:** Solo funcionaban las flechas del teclado.
-
-**Solución Implementada:**
-- **Configuración en `settings.json`** para controles personalizables
-- **Carga desde `settings.py`** de las teclas configuradas
-- **Soporte para WASD** y flechas simultáneamente
-
-```json
-"Controls": {
-    "move_left": "A",
-    "move_right": "D", 
-    "move_up": "W",
-    "move_down": "S",
-    "attack": "SPACE",
-    "jump": "W",
-    "block": "S"
-}
-```
-
-### **5. IA del Enemigo Corregida** ✅
-**Problema Original:** `AttributeError: 'Character' object has no attribute 'attack'`
-
-**Solución Implementada:**
-- **Corrección de atributo** de `enemy.attack` a `enemy.damage`
-- **IA funcional** sin errores de atributos
-
-## 📊 **Resultados Finales**
-
-### **Sprites:**
-- ✅ **7 sprites PNG reales** cargados correctamente
-- ✅ **Ambos personajes** usan sprites de `sample_character`
-- ✅ **Mapeo automático** de nombres de archivo
-- ✅ **Sprites placeholder** para archivos .txt
-- ✅ **Fallback** a rectángulos si no hay sprites
-
-### **Físicas:**
-- ✅ **Movimiento controlado** y realista
-- ✅ **Gravedad apropiada** - no más "vuelo"
-- ✅ **FPS consistentes** a 60 FPS
-- ✅ **Delta time limitado** para evitar saltos
-- ✅ **Fricción mejorada** para menos deslizamiento
-
-### **Controles:**
-- ✅ **WASD** funcionando perfectamente
-- ✅ **Flechas** funcionando como alternativa
-- ✅ **Configuración personalizable** en settings.json
-- ✅ **Controles responsivos** y fluidos
-
-### **IA y Enemigos:**
-- ✅ **IA del enemigo** funcionando sin errores
-- ✅ **Colisiones correctas** con el suelo
-- ✅ **Comportamiento inteligente** del enemigo
-- ✅ **Estados de IA** funcionando correctamente
-
-## 🎮 **Estado Final del Modo Debug Fight:**
-
-### **Funcionalidades Completas:**
-- ✅ **Sprites PNG reales** para ambos personajes
-- ✅ **Físicas realistas** y controladas
-- ✅ **Controles WASD** responsivos
-- ✅ **IA del enemigo** funcionando correctamente
-- ✅ **Colisiones correctas** con el suelo
-- ✅ **FPS estables** a 60 FPS
-- ✅ **Fondos cargados** correctamente
-- ✅ **Sin errores** de pygame.surface
-
-### **Controles Disponibles:**
+### **Controles del Juego:**
 - **WASD** o **Flechas**: Movimiento
 - **SPACE**: Atacar
 - **R**: Reset ronda
 - **N**: Nueva lucha
-- **D**: Toggle debug info
 - **ESC**: Volver al menú
 
 ### **Tipos de Sprite Disponibles:**
@@ -144,19 +37,6 @@ JUMP_FORCE: float = -15.0 # Reducido para saltos más realistas
 5. **hurt** - Sprite de daño
 6. **jump** - Sprite de salto
 7. **death** - Sprite de muerte
-
-## 🎉 **¡Problemas Completamente Solucionados!**
-
-**El modo debug fight ahora funciona perfectamente:**
-- ✅ **Sprites PNG reales** para jugador y enemigo
-- ✅ **Físicas controladas** y realistas
-- ✅ **Movimiento fluido** sin "vuelo"
-- ✅ **FPS estables** y consistentes
-- ✅ **Controles responsivos** y precisos
-- ✅ **IA inteligente** del enemigo
-- ✅ **Sin errores** de pygame o atributos
-
-**¡El juego está listo para jugar con sprites reales y físicas mejoradas!** 🎮✨
 
 ---
 
@@ -191,28 +71,15 @@ Nueva pantalla accesible desde el menú principal (`[4] Settings`) que permite c
 4. **IA para imágenes** (Stable Diffusion/OpenAI DALL-E)
    - Selecciona qué proveedor usar para generar imágenes
 
+**Pantalla de Configuración:**
+![Pantalla de Configuración de IA](.img/settings_IA.png)
+
+*Interfaz de la pantalla de configuración donde se pueden ajustar las opciones de generación con IA*
+
 **Controles en Settings:**
 - `↑/↓` o `W/S`: Navegar entre opciones
 - `←/→` o `A/D` o `ENTER`: Cambiar valor
 - `ESC` o `0`: Guardar y volver al menú
-
-### **Integración con LangSmith** 🆕
-- ✅ **Trazabilidad completa** de todas las llamadas a IA
-- ✅ **Debugging** de prompts y respuestas
-- ✅ **Monitoreo** de generación de imágenes
-- ✅ **Análisis** de costos y rendimiento
-
-**Configuración en `.env`:**
-```env
-LANGCHAIN_TRACING_V2=true
-LANGCHAIN_API_KEY=tu_api_key
-LANGCHAIN_PROJECT=SimpleFight_v3
-```
-
-**Vista de Observabilidad en LangSmith:**
-![Observabilidad LangSmith](.img/langsmith.png)
-
-*Captura de pantalla de LangSmith mostrando el trazado detallado de una operación de generación de imagen (`render_portrait_image`), incluyendo inputs, outputs y tiempo de ejecución.*
 
 ---
 
@@ -228,17 +95,6 @@ LANGCHAIN_PROJECT=SimpleFight_v3
 - ✅ **Pixel art específico**: "8-bit pixel art, retro game sprite"
 - ✅ **Límite de tokens**: Prompts optimizados para CLIP (77 tokens)
 - ✅ **Negative prompts**: Evita estilos realistas y sombras suaves
-
-### **Sistema de Fallback**
-Si la generación con IA falla o está desactivada:
-- ✅ Usa personajes de test locales (`_fake_candidates`)
-- ✅ Usa imágenes de test en `app/UI/assets/test/portraits/`
-- ✅ El juego continúa funcionando sin errores
-
-**Ejemplo de imágenes por defecto disponibles:**
-![Imágenes de test por defecto](.img/test.png)
-
-*Algunas de las imágenes de test que se usan cuando no se genera con IA*
 
 ---
 
@@ -263,7 +119,66 @@ Cuando `use_local_characters_for_test = false` y `use_existing_assets = false`:
    - Tamaño: 512x512
    - Fondo transparente
 
+**Proceso de Creación de Personajes:**
+![Proceso de Creación de Personajes](.img/creacion_personajes_01.png)
+
+*Flujo completo de generación de personajes: desde la creación de candidatos hasta la generación de imágenes*
+
+**Proceso en Dos Etapas - Separación de IAs:**
+![Proceso de Creación en Dos Etapas](.img/creacion_personajes_02.png)
+
+*Ilustración del proceso de generación en dos etapas:*
+- **Etapa 1 (IA de Texto)**: Los campos de datos del personaje (nombre, daño, resistencia, arma, descripción) ya están generados por una IA de lenguaje (Ollama/OpenAI). Estos datos aparecen inmediatamente en la pantalla de selección.
+- **Etapa 2 (IA de Imágenes)**: Las imágenes de retrato todavía están en proceso de generación ("Loading...") por otra IA especializada en imágenes (Stable Diffusion/OpenAI DALL-E). Este proceso es más lento y ocurre en paralelo mientras el jugador puede ver los datos del personaje.
+
+*Este diseño permite que el jugador vea la información del personaje mientras las imágenes se generan en segundo plano, mejorando la experiencia de usuario.*
+
+### **Generación de Imágenes - Comparativa de Proveedores**
+
+El juego soporta dos proveedores para generar imágenes de retratos:
+
+#### **Stable Diffusion (Local)**
+- **Modelo**: `stabilityai/sdxl-turbo` (25.85 GB)
+- **Tiempo de generación**: ~15-30 segundos por imagen (depende del hardware)
+- **Costo**: Gratis (local, requiere GPU recomendada)
+- **Calidad**: Buena para pixel art, requiere optimización de prompts
+- **Parámetros optimizados**: 8 steps, guidance_scale 2.0
+
 **Ventajas:**
+- ✅ Gratis, sin costos por imagen
+- ✅ Totalmente local, sin dependencias externas
+- ✅ Bueno para desarrollo y testing
+
+**Desventajas:**
+- ⚠️ Requiere GPU potente para tiempos razonables
+- ⚠️ Prompts deben estar muy optimizados para pixel art
+- ⚠️ Calidad puede variar más que con OpenAI
+
+#### **OpenAI DALL-E (Cloud)**
+- **Modelo**: DALL-E 3
+- **Tiempo de generación**: ~5-10 segundos por imagen
+- **Costo**: De pago (según plan de API)
+- **Calidad**: Superior, mejor comprensión de prompts y estilo pixel art
+
+**Ventajas:**
+- ✅ Calidad consistente y superior
+- ✅ Mejor comprensión de prompts complejos
+- ✅ Más rápido que Stable Diffusion local
+- ✅ No requiere GPU local
+
+**Desventajas:**
+- ⚠️ Requiere API key y tiene costos por imagen
+- ⚠️ Depende de conexión a internet
+
+### **Ejemplos de Imágenes Generadas**
+
+En la carpeta `app/UI/assets/images/portraits/` puedes encontrar ejemplos de retratos generados:
+- **Con OpenAI DALL-E**: Imágenes de alta calidad con mejor comprensión del estilo pixel art
+- **Con Stable Diffusion**: Imágenes generadas localmente con SDXL Turbo
+
+Estos archivos PNG sirven como referencia para comparar la calidad y estilo de ambos proveedores.
+
+**Ventajas del Modo 1:**
 - ✅ Personajes únicos y variados
 - ✅ Imágenes generadas específicamente para cada personaje
 - ✅ Experiencia personalizada cada partida
@@ -552,13 +467,15 @@ PortraitSpec(
 
 ### **Trazabilidad con LangSmith** 📊
 
-Todos los agentes están decorados con `@traceable` para seguimiento completo:
+Todos los agentes están decorados con `@traceable` para seguimiento completo de todas las operaciones de IA.
 
-- ✅ **Llamadas rastreadas**: Cada llamada a IA se registra
-- ✅ **Prompts visibles**: Puedes ver los prompts exactos usados
-- ✅ **Respuestas registradas**: Todas las respuestas se guardan
-- ✅ **Tiempos de ejecución**: Métricas de rendimiento
-- ✅ **Errores capturados**: Debugging facilitado
+**Funcionalidades de Observabilidad:**
+
+1. **Waterfall View**: Visualización temporal de todas las operaciones
+2. **Input/Output Tracking**: Ver exactamente qué datos entran y salen de cada agente
+3. **Performance Metrics**: Tiempos de ejecución de cada llamada
+4. **Error Tracking**: Captura automática de errores y excepciones
+5. **Project Organization**: Todas las trazas agrupadas en el proyecto `SimpleFight_v3`
 
 **Vista de Observabilidad:**
 
@@ -570,13 +487,12 @@ Todos los agentes están decorados con `@traceable` para seguimiento completo:
 - *Tiempo de ejecución de cada operación*
 - *Lista completa de todas las llamadas a agentes (create_candidates, render_portraits, create_portrait_briefs, etc.)*
 
-**Funcionalidades de Observabilidad:**
-
-1. **Waterfall View**: Visualización temporal de todas las operaciones
-2. **Input/Output Tracking**: Ver exactamente qué datos entran y salen de cada agente
-3. **Performance Metrics**: Tiempos de ejecución de cada llamada
-4. **Error Tracking**: Captura automática de errores y excepciones
-5. **Project Organization**: Todas las trazas agrupadas en el proyecto `SimpleFight_v3`
+**Configuración en `.env`:**
+```env
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_API_KEY=tu_api_key
+LANGCHAIN_PROJECT=SimpleFight_v3
+```
 
 **Acceso:** https://smith.langchain.com → Proyecto `SimpleFight_v3`
 
@@ -616,132 +532,78 @@ Todos los agentes están decorados con `@traceable` para seguimiento completo:
 
 ---
 
+## ✅ **Sistema de Fallback**
+
+Si la generación con IA falla o está desactivada, el juego usa automáticamente assets de test:
+
+- ✅ **Personajes de test**: Usa `_fake_candidates()` con nombres aleatorios
+- ✅ **Imágenes de test**: Usa imágenes pregeneradas en `app/UI/assets/test/portraits/`
+- ✅ **El juego continúa funcionando** sin errores
+
+**Ejemplo de imágenes por defecto disponibles:**
+![Imágenes de test por defecto](.img/test.png)
+
+*Algunas de las imágenes de test que se usan cuando no se genera con IA*
+
+---
+
 ## ✅ **Problemas Solucionados**
 
 ### **1. Sprites PNG Reales Cargados** ✅
 **Problema Original:** Los sprites de `sample_character` no se cargaban, mostrando solo rectángulos de colores.
 
 **Solución Implementada:**
-- **Mapeo mejorado** de nombres de archivo PNG a tipos de sprite
-- **Búsqueda de archivos** tanto `.png` como `.txt`
-- **Sprites forzados** a `sample_character` para ambos personajes
-- **Sprites placeholder** para archivos `.txt`
+- Mapeo mejorado de nombres de archivo PNG a tipos de sprite
+- Búsqueda de archivos tanto `.png` como `.txt`
+- Sprites forzados a `sample_character` para ambos personajes
+- Sprites placeholder para archivos `.txt`
 
 ### **2. Físicas Mejoradas y Controladas** ✅
 **Problema Original:** El juego era muy lento y la gravedad permitía "volar".
 
 **Solución Implementada:**
-- **FPS forzados a 60** para consistencia
-- **Delta time limitado** para evitar saltos grandes
-- **Constantes físicas ajustadas** para mejor control
+- FPS forzados a 60 para consistencia
+- Delta time limitado para evitar saltos grandes
+- Constantes físicas ajustadas (GRAVITY: 0.8, FRICTION: 0.85, MAX_SPEED: 8.0, JUMP_FORCE: -15.0)
 
 ### **3. Error de Fondo Corregido** ✅
 **Problema Original:** `argument 1 must be pygame.surface.Surface, not str`
 
 **Solución Implementada:**
-- **Validación de carga** de fondos en `DebugAssetsManager`
-- **Manejo de errores** cuando no se puede cargar un fondo
-- **Fallback seguro** cuando el fondo es `None`
+- Validación de carga de fondos en `DebugAssetsManager`
+- Manejo de errores cuando no se puede cargar un fondo
+- Fallback seguro cuando el fondo es `None`
 
 ### **4. Controles WASD Implementados** ✅
 **Problema Original:** Solo funcionaban las flechas del teclado.
 
 **Solución Implementada:**
-- **Configuración en `settings.json`** para controles personalizables
-- **Soporte para WASD** y flechas simultáneamente
+- Configuración en `settings.json` para controles personalizables
+- Soporte para WASD y flechas simultáneamente
 
 ### **5. IA del Enemigo Corregida** ✅
 **Problema Original:** `AttributeError: 'Character' object has no attribute 'attack'`
 
 **Solución Implementada:**
-- **Corrección de atributo** de `enemy.attack` a `enemy.damage`
-- **IA funcional** sin errores de atributos
+- Corrección de atributo de `enemy.attack` a `enemy.damage`
+- IA funcional sin errores de atributos
 
 ### **6. Generación de Imágenes con IA** ✅ 🆕
 **Problema Original:** Imágenes generadas eran ruido/estático sin reconocer personajes.
 
 **Solución Implementada:**
-- **Modelo mejorado**: De `runwayml/stable-diffusion-v1-5` a `stabilityai/sdxl-turbo`
-- **Prompts optimizados** para pixel art con keywords específicas
-- **Parámetros ajustados**: Steps reducidos a 8, guidance_scale optimizado
-- **Negative prompts** mejorados para evitar estilos realistas
+- Modelo mejorado: De `runwayml/stable-diffusion-v1-5` a `stabilityai/sdxl-turbo`
+- Prompts optimizados para pixel art con keywords específicas
+- Parámetros ajustados: Steps reducidos a 8, guidance_scale optimizado
+- Negative prompts mejorados para evitar estilos realistas
 
 ### **7. Structured Output con Ollama** ✅ 🆕
 **Problema Original:** Ollama devolvía el esquema JSON en lugar de los datos.
 
 **Solución Implementada:**
-- **Prompts mejorados** para que Ollama genere datos, no esquemas
-- **Logging mejorado** para debugging de respuestas
-- **Detección automática** cuando se devuelve el esquema en lugar de datos
-
----
-
-## 📊 **Resultados Finales**
-
-### **Sprites:**
-- ✅ **7 sprites PNG reales** cargados correctamente
-- ✅ **Ambos personajes** usan sprites de `sample_character`
-- ✅ **Mapeo automático** de nombres de archivo
-- ✅ **Sprites placeholder** para archivos .txt
-- ✅ **Fallback** a rectángulos si no hay sprites
-
-### **Físicas:**
-- ✅ **Movimiento controlado** y realista
-- ✅ **Gravedad apropiada** - no más "vuelo"
-- ✅ **FPS consistentes** a 60 FPS
-- ✅ **Delta time limitado** para evitar saltos
-- ✅ **Fricción mejorada** para menos deslizamiento
-
-### **IA y Generación:**
-- ✅ **Personajes generados con IA** (Ollama/OpenAI)
-- ✅ **Imágenes generadas con SDXL Turbo** (pixel art optimizado)
-- ✅ **Configuración desde menú** (pantalla Settings)
-- ✅ **Fallback automático** a assets de test
-- ✅ **Trazabilidad con LangSmith** de todas las llamadas
-
-### **Controles:**
-- ✅ **WASD** funcionando perfectamente
-- ✅ **Flechas** funcionando como alternativa
-- ✅ **Configuración personalizable** en settings.json
-- ✅ **Controles responsivos** y fluidos
-
----
-
-## 🎮 **Estado Final del Modo Debug Fight:**
-
-### **Funcionalidades Completas:**
-- ✅ **Sprites PNG reales** para ambos personajes
-- ✅ **Físicas realistas** y controladas
-- ✅ **Controles WASD** responsivos
-- ✅ **IA del enemigo** funcionando correctamente
-- ✅ **Colisiones correctas** con el suelo
-- ✅ **FPS estables** a 60 FPS
-- ✅ **Fondos cargados** correctamente
-- ✅ **Sin errores** de pygame.surface
-
-### **Controles Disponibles:**
-- **WASD** o **Flechas**: Movimiento
-- **SPACE**: Atacar
-- **R**: Reset ronda
-- **N**: Nueva lucha
-- **D**: Toggle debug info
-- **ESC**: Volver al menú
-
----
-
-## 🎉 **¡Problemas Completamente Solucionados!**
-
-**El juego ahora incluye:**
-- ✅ **Sprites PNG reales** para jugador y enemigo
-- ✅ **Físicas controladas** y realistas
-- ✅ **Movimiento fluido** sin "vuelo"
-- ✅ **FPS estables** y consistentes
-- ✅ **Controles responsivos** y precisos
-- ✅ **IA inteligente** del enemigo
-- ✅ **Generación de contenido con IA** (personajes e imágenes)
-- ✅ **Configuración desde menú** (pantalla Settings)
-- ✅ **Trazabilidad con LangSmith**
-- ✅ **Sin errores** de pygame o atributos
+- Prompts mejorados para que Ollama genere datos, no esquemas
+- Logging mejorado para debugging de respuestas
+- Detección automática cuando se devuelve el esquema en lugar de datos
 
 ---
 

@@ -5,6 +5,7 @@ Implementa BaseIAProvider para Ollama (local).
 
 import os
 import json
+import random
 import requests
 from typing import Dict, Any
 from .base_provider import BaseIAProvider
@@ -65,6 +66,9 @@ class OllamaProvider(BaseIAProvider):
         max_tokens = kwargs.get('max_tokens', self.num_predict_default)
         timeout = self.timeout
         
+        # Generar seed aleatorio para variabilidad (si no se proporciona uno)
+        seed = kwargs.get('seed', random.randint(-2147483648, 2147483647))
+        
         # ⚠️ CRÍTICO: Las opciones van dentro de "options"
         # Usar num_predict en lugar de max_tokens
         payload = {
@@ -74,12 +78,13 @@ class OllamaProvider(BaseIAProvider):
             "options": {  # ⚠️ CRÍTICO: Las opciones van dentro de "options"
                 "temperature": temperature,
                 "num_predict": max_tokens,  # ✅ Usar num_predict, NO max_tokens
+                "seed": seed,  # ✅ Seed aleatorio para variabilidad
             }
         }
         
         # Añadir otras opciones de kwargs si existen
         for key, value in kwargs.items():
-            if key not in ['temperature', 'max_tokens']:
+            if key not in ['temperature', 'max_tokens', 'seed']:
                 payload['options'][key] = value
         
         try:
@@ -171,7 +176,19 @@ class OllamaProvider(BaseIAProvider):
                 items_type = items.get('type', 'object')
                 min_items = value.get('minItems', 0)
                 max_items = value.get('maxItems', 'infinito')
-                schema_desc.append(f"- {key}: array de {items_type} (mínimo {min_items}, máximo {max_items}){'(REQUERIDO)' if is_required else '(opcional)'}")
+                
+                # Si es array de objetos, mostrar propiedades de cada objeto
+                if items_type == 'object' and 'properties' in items:
+                    item_props = items.get('properties', {})
+                    item_required = items.get('required', [])
+                    prop_details = []
+                    for prop_key, prop_value in item_props.items():
+                        prop_req = prop_key in item_required
+                        prop_details.append(f"    - {prop_key}: {prop_value.get('type', 'string')}{' (REQUERIDO)' if prop_req else ' (opcional)'}")
+                    schema_desc.append(f"- {key}: array de objetos (mínimo {min_items}, máximo {max_items}){'(REQUERIDO)' if is_required else '(opcional)'}")
+                    schema_desc.extend(prop_details)
+                else:
+                    schema_desc.append(f"- {key}: array de {items_type} (mínimo {min_items}, máximo {max_items}){'(REQUERIDO)' if is_required else '(opcional)'}")
             else:
                 req_mark = " (REQUERIDO)" if is_required else " (opcional)"
                 schema_desc.append(f"- {key}: {prop_type}{req_mark}")

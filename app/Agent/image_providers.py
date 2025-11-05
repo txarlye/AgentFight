@@ -185,10 +185,11 @@ class StableDiffusionProvider:
                 negative_prompt = "blurry, low quality, distorted, text, watermark, photorealistic, 3d render, smooth gradients, realistic textures, high resolution, detailed shading"
             
             # Validar número de steps (algunos schedulers tienen límites)
-            # SDXL Turbo funciona bien con 4-8 steps, otros modelos necesitan más
+            # SDXL Turbo funciona mejor con 10-20 steps para EulerAncestralDiscrete
+            # El scheduler EulerAncestralDiscrete tiene problemas con menos de 10 steps
             if "turbo" in self.model_name.lower():
-                num_steps = min(self.steps, 10)  # Máximo 10 steps para Turbo
-                num_steps = max(num_steps, 4)   # Mínimo 4 steps para Turbo
+                num_steps = min(self.steps, 20)  # Máximo 20 steps para Turbo
+                num_steps = max(num_steps, 10)   # Mínimo 10 steps para Turbo (evita errores de scheduler)
             else:
                 num_steps = min(self.steps, 50)  # Máximo 50 steps para otros modelos
                 num_steps = max(num_steps, 10)   # Mínimo 10 steps para otros modelos

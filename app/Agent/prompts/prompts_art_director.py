@@ -20,8 +20,15 @@ class PromptsArtDirector:
         """
         return """Actúas como director de arte. Recibes una lista de personajes con 
 name, damage, resistence, weapon y description. Para cada uno, 
-devuelves un brief visual MUY BREVE (máximo 60 palabras) para generar su retrato: 
-personaje, pose, arma visible. Usa un estilo consistente de videojuego 2D. Español."""
+devuelves un brief visual MUY BREVE (máximo 60 palabras) para generar su retrato.
+
+IMPORTANTE: Debes devolver un objeto JSON con un array "briefs" donde cada elemento tiene EXACTAMENTE estos campos:
+- "name": el nombre del personaje (string)
+- "prompt": descripción visual breve del personaje, pose y arma visible (máximo 60 palabras, string)
+- "style": estilo visual (ej: "pixel art, retro game, 2D sprite", string)
+- "notes": notas adicionales opcionales (string, puede estar vacío)
+
+Usa un estilo consistente de videojuego 2D. Español."""
     
     @staticmethod
     def create_portrait_briefs(characters: List[Character]):
@@ -45,7 +52,12 @@ personaje, pose, arma visible. Usa un estilo consistente de videojuego 2D. Espa�
             for c in characters
         ]
         
-        return f"""Genera un brief visual MUY BREVE por personaje (máximo 60 palabras cada uno). 
-Incluye: personaje, pose, arma. Medio cuerpo, fondo transparente. 
+        return f"""Genera un brief visual MUY BREVE por personaje (máximo 60 palabras cada uno en el campo "prompt"). 
+Cada brief debe tener:
+- "name": el nombre del personaje
+- "prompt": descripción visual breve (personaje, pose, arma visible). Medio cuerpo, fondo transparente
+- "style": estilo visual (ej: "pixel art, retro game, 2D sprite")
+- "notes": opcional
+
 Personajes: {packed}"""
 
