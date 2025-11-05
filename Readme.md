@@ -1,4 +1,4 @@
-# 🎮 SimpleFight v3 - Documentación Completa
+# 🎮 AgentFight - Documentación Completa
 
 ## 📋 **Índice**
 1. [Funcionalidades Principales](#funcionalidades-principales)
