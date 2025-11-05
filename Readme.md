@@ -5,8 +5,6 @@
 2. [Sistema de IA](#sistema-de-ia)
 3. [Configuración](#configuración)
 4. [Generación de Contenido](#generación-de-contenido)
-5. [Problemas Solucionados](#problemas-solucionados)
-6. [Próximos Pasos](#próximos-pasos)
 
 ---
 
