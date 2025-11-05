@@ -37,6 +37,7 @@ El juego incluye:
 6. **jump** - Sprite de salto
 7. **death** - Sprite de muerte
 
+nota: actualmente me encuentro trabajando en la generación de personajes ajustando Stable Diffusion para generar contenido de la misma calidad que genera openai pero de manera gratuita. El siguiente paso será la generación de sprites y continuar con el desarrollo de la pantalla de lucha que actualmente usa un Sprite de fallback 
 ---
 
 ## 🤖 **Sistema de IA**
