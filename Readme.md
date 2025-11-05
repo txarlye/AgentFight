@@ -12,7 +12,7 @@
 
 ## 🚀 **Funcionalidades Principales**
 
-SimpleFight v3 es un juego de combate 2D con generación de contenido mediante IA. El juego incluye:
+AgentFight es un juego de combate 2D con generación de contenido mediante IA. El juego incluye:
 
 - ✅ **Sistema de combate** con físicas realistas y controles responsivos
 - ✅ **Generación de personajes** con IA (Ollama/OpenAI)
