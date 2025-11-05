@@ -201,7 +201,7 @@ Cuando `use_local_characters_for_test = true` o `use_existing_assets = true`:
 
 ### **Configuración de Proveedor de IA**
 - **Ollama** (Local): Modelo `llama3.1:8b` - Gratis, rápido, local
-- **OpenAI**: Modelos `gpt-4o-mini` o `gpt-4` - Requiere API key, más costoso
+- **OpenAI**: Modelos `gpt-4o-mini` o `gpt-4` - Requiere API key y genera coste monetario.
 
 ---
 
