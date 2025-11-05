@@ -1,0 +1,3 @@
+# WALK SPRITE - Amarillo
+# Este es un sprite de muestra para walk
+# Reemplaza este archivo con un PNG real

@@ -1,0 +1,13 @@
+pygame>=2.0.0
+python-dotenv>=0.19.0
+openai>=1.0.0
+requests>=2.31.0
+diffusers>=0.21.0
+torch>=2.0.0
+torchvision>=0.15.0
+accelerate>=0.20.0
+transformers>=4.30.0
+pillow>=9.0.0
+numpy>=1.21.0
+langsmith>=0.1.0
+

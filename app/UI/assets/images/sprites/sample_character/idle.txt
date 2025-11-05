@@ -1,0 +1,3 @@
+# IDLE SPRITE - Verde
+# Este es un sprite de muestra para idle
+# Reemplaza este archivo con un PNG real

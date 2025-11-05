@@ -1,0 +1,3 @@
+# BLOCK SPRITE - Azul
+# Este es un sprite de muestra para block
+# Reemplaza este archivo con un PNG real

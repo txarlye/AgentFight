@@ -1,0 +1,192 @@
+---
+description: Estándares para creación de reglas en el proyecto - Formato MDC y mejores prácticas
+globs: ["**/.cursor/rules/**", "**/*.mdc", "**/AGENTS.md"]
+alwaysApply: true
+---
+
+# ESTÁNDARES PARA CREACIÓN DE REGLAS
+
+## 📋 UBICACIÓN Y ESTRUCTURA
+
+### **Ubicación Obligatoria**:
+- **Todas las reglas** deben estar en `.cursor/rules/`
+- **Formato de archivo**: `.mdc` (Markdown con metadatos)
+- **Control de versiones**: Sí, todas las reglas están en Git
+
+### **Estructura de Archivo MDC**:
+```markdown
+---
+description: Descripción clara de qué hace la regla
+globs: ["**/patron/**", "**/*.extension"]
+alwaysApply: true/false
+---
+
+# TÍTULO DE LA REGLA
+
+## Contenido de la regla...
+```
+
+## 🎯 TIPOS DE REGLAS
+
+### **1. Always (Siempre Aplicada)**:
+```markdown
+---
+description: Regla que siempre se aplica
+globs: ["**/*"]
+alwaysApply: true
+---
+```
+
+### **2. Auto Attached (Aplicada por Patrón)**:
+```markdown
+---
+description: Regla aplicada automáticamente
+globs: ["**/settings/**", "**/config.json"]
+alwaysApply: false
+---
+```
+
+### **3. Agent Requested (Solicitada por IA)**:
+```markdown
+---
+description: Regla que la IA puede solicitar cuando sea relevante
+globs: ["**/tests/**"]
+alwaysApply: false
+---
+```
+
+### **4. Manual (Solo con @nombreRegla)**:
+```markdown
+---
+description: Regla que solo se aplica cuando se menciona explícitamente
+globs: ["**/templates/**"]
+alwaysApply: false
+---
+```
+
+## 📝 MEJORES PRÁCTICAS
+
+### ✅ **SÍ HACER**:
+- **Mantener reglas bajo 500 líneas**
+- **Dividir reglas grandes en varias reglas componibles**
+- **Proporcionar ejemplos concretos y archivos de referencia**
+- **Escribir reglas como documentación interna clara**
+- **Usar descripciones específicas y accionables**
+- **Incluir patrones glob apropiados**
+- **Reutilizar reglas cuando se repitan prompts**
+
+### ❌ **NO HACER**:
+- **Crear reglas vagas o genéricas**
+- **Escribir reglas de más de 500 líneas**
+- **Usar descripciones ambiguas**
+- **Colocar reglas fuera de `.cursor/rules/`**
+- **Usar formato que no sea MDC**
+
+## 🔧 ESTRUCTURA DE CONTENIDO
+
+### **Encabezado Obligatorio**:
+```markdown
+---
+description: Descripción clara y específica
+globs: ["patrones", "de", "archivos"]
+alwaysApply: true/false
+---
+```
+
+### **Contenido Organizado**:
+```markdown
+# TÍTULO PRINCIPAL
+
+## 📋 Sección con emoji
+- Punto específico
+- Otro punto específico
+
+## 🎯 Otra sección
+- Más contenido organizado
+
+## 📝 Ejemplos de código
+```python
+# Código de ejemplo
+```
+
+## ✅/❌ Lista de buenas/malas prácticas
+```
+
+## 🎨 CONVENCIONES DE NOMBRES
+
+### **Archivos de Reglas**:
+- `configuracion_general.mdc` ✅
+- `streamlit_clean_code.mdc` ✅
+- `proteccion_env.mdc` ✅
+- `creacion_reglas.mdc` ✅
+
+### **Nombres Evitados**:
+- `regla.mdc` ❌ (muy genérico)
+- `config.mdc` ❌ (confuso)
+- `rule1.mdc` ❌ (no descriptivo)
+
+## 📁 ORGANIZACIÓN DE REGLAS
+
+### **Estructura Recomendada**:
+```
+.cursor/rules/
+├── configuracion_general.mdc      # Configuración del sistema
+├── streamlit_clean_code.mdc       # Estándares de código Streamlit
+├── proteccion_env.mdc             # Protección de archivos críticos
+├── creacion_reglas.mdc            # Esta regla
+└── [otras_reglas_especificas.mdc]
+```
+
+### **Reglas Anidadas** (si es necesario):
+```
+proyecto/
+├── .cursor/rules/                 # Reglas globales
+├── backend/
+│   └── .cursor/rules/            # Reglas específicas del backend
+└── frontend/
+    └── .cursor/rules/            # Reglas específicas del frontend
+```
+
+## 🔗 REFERENCIAS A ARCHIVOS
+
+### **Incluir Archivos en Reglas**:
+```markdown
+# Ejemplo de uso de @archivo
+@settings.py
+@config.json
+@main.py
+```
+
+### **Referenciar Otras Reglas**:
+```markdown
+# Para usar otra regla
+@configuracion_general.mdc
+@streamlit_clean_code.mdc
+```
+
+## 🚀 COMANDOS ÚTILES
+
+### **Crear Nueva Regla**:
+- Usar comando `New Cursor Rule` en Cursor
+- O crear manualmente en `.cursor/rules/`
+- O usar `/Generate Cursor Rules` en el chat
+
+### **Ver Estado de Reglas**:
+- Ir a `Cursor Settings > Rules`
+- Ver todas las reglas y su estado
+- Activar/desactivar reglas según necesidad
+
+## 📋 CHECKLIST PARA NUEVAS REGLAS
+
+- [ ] ¿Está en `.cursor/rules/`?
+- [ ] ¿Tiene formato MDC correcto?
+- [ ] ¿Tiene descripción clara?
+- [ ] ¿Tiene patrones glob apropiados?
+- [ ] ¿Está bajo 500 líneas?
+- [ ] ¿Es específica y accionable?
+- [ ] ¿Incluye ejemplos si es necesario?
+- [ ] ¿Sigue las convenciones de nombres?
+
+---
+
+**Esta regla define los estándares para crear reglas en el proyecto y debe seguirse para mantener consistencia y calidad.**

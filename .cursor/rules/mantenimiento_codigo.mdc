@@ -1,0 +1,200 @@
+---
+description: Estándares para mantenimiento del código - Gestión de archivos muertos y funciones no utilizadas
+globs: ["**/*.py", "**/tests/**", "**/.borrar/**"]
+alwaysApply: true
+---
+
+# MANTENIMIENTO DEL CÓDIGO
+
+## 🚫 PROHIBICIÓN DE SCRIPTS SUELTOS
+
+### **NUNCA CREAR**:
+- Scripts que no se llamen desde el flujo general del programa
+- Archivos de prueba fuera de `tests/`
+- Scripts de demo fuera de `tests/demos/` o `tests/`
+- Código que no tenga un propósito claro en el flujo principal
+
+### **UBICACIÓN CORRECTA**:
+- **Tests**: `tests/[categoria]/test_[nombre].py`
+- **Demos**: `tests/demos/` o `tests/`
+- **Scripts principales**: Solo en el flujo general del programa
+
+## 🗂️ GESTIÓN DE ARCHIVOS MUERTOS
+
+### **Archivos No Utilizados**:
+- **Mover a `.borrar/`** todos los archivos que no se llamen desde ningún sitio
+- **Verificar antes de mover** que realmente no se usan
+- **Documentar el motivo** del movimiento si es necesario
+
+### **Proceso de Limpieza**:
+1. **Identificar archivos muertos**
+2. **Verificar que no se referencian** en el código
+3. **Mover a `.borrar/`** con comentario explicativo
+4. **Actualizar documentación** si es necesario
+
+## 🔧 GESTIÓN DE FUNCIONES NO UTILIZADAS
+
+### **Proceso Obligatorio para Funciones Muertas**:
+
+#### **Paso 1: Renombrar con Sufijo de Eliminación**
+```python
+# ANTES
+def funcion_muerta():
+    pass
+
+# DESPUÉS
+def funcion_muerta_eliminar():
+    pass
+```
+
+#### **Paso 2: Crear Test de Verificación**
+```python
+# tests/[categoria]/test_funcion_muerta_eliminar.py
+"""
+Test para verificar que la función marcada para eliminación
+no rompe el sistema antes de eliminarla
+"""
+
+import unittest
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+class TestFuncionEliminar(unittest.TestCase):
+    def test_funcion_muerta_eliminar_no_rompe_sistema(self):
+        """Verificar que eliminar la función no rompe el sistema"""
+        # Test que verifica que el sistema sigue funcionando
+        # sin la función marcada para eliminación
+        pass
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+#### **Paso 3: Ejecutar Test y Verificar**
+- **Ejecutar el test** para asegurar que no rompe nada
+- **Verificar flujo general** del programa
+- **Confirmar que no hay dependencias** ocultas
+
+#### **Paso 4: Eliminar Función**
+```python
+# Eliminar completamente la función
+# (ya no existe en el código)
+```
+
+### **Proceso de Verificación**:
+1. **Renombrar función** con sufijo `_eliminar`
+2. **Crear test específico** para verificar impacto
+3. **Ejecutar test** y verificar que no rompe
+4. **Eliminar función** definitivamente
+5. **Limpiar test** de verificación si es necesario
+
+## ⚠️ PROTOCOLO DE ADVERTENCIAS
+
+### **Antes de Eliminar Cualquier Función**:
+- **ADVERTIR** al usuario sobre la eliminación
+- **Explicar el proceso** paso a paso
+- **Mostrar el test** que se va a crear
+- **Confirmar** que el usuario está de acuerdo
+
+### **Mensaje de Advertencia**:
+```
+⚠️ FUNCIÓN MARCADA PARA ELIMINACIÓN
+
+Función: [nombre_funcion]
+Ubicación: [archivo.py]
+Proceso:
+1. ✅ Renombrada a [nombre_funcion]_eliminar
+2. 🔄 Creando test de verificación...
+3. ⏳ Ejecutando test...
+4. ❓ ¿Proceder con la eliminación?
+
+¿Continuar? (Sí/No)
+```
+
+## 📁 ESTRUCTURA DE LIMPIEZA
+
+### **Carpeta `.borrar/`**:
+```
+.borrar/
+├── archivos_muertos/
+│   ├── script_antiguo.py
+│   └── demo_no_usado.py
+├── funciones_eliminadas/
+│   └── backup_funciones_eliminadas.txt
+└── README_limpieza.md
+```
+
+### **Documentación de Limpieza**:
+```markdown
+# Archivos Movidos a .borrar/
+
+## Fecha: [fecha]
+## Motivo: [razón del movimiento]
+
+### Archivos Movidos:
+- `archivo1.py` - No se llama desde ningún sitio
+- `archivo2.py` - Reemplazado por nueva implementación
+
+### Funciones Eliminadas:
+- `funcion1()` - No utilizada en el flujo principal
+- `funcion2()` - Reemplazada por función mejorada
+```
+
+## ✅ CHECKLIST DE LIMPIEZA
+
+### **Para Archivos**:
+- [ ] ¿Se llama desde el flujo principal?
+- [ ] ¿Tiene dependencias activas?
+- [ ] ¿Es necesario para el funcionamiento?
+- [ ] ¿Se puede mover a `.borrar/`?
+
+### **Para Funciones**:
+- [ ] ¿Se usa en el flujo principal?
+- [ ] ¿Tiene dependencias ocultas?
+- [ ] ¿Se puede renombrar a `_eliminar`?
+- [ ] ¿Se puede crear test de verificación?
+- [ ] ¿Se puede eliminar sin romper el sistema?
+
+## 🚀 COMANDOS ÚTILES
+
+### **Buscar Archivos No Utilizados**:
+```bash
+# Buscar archivos Python que no se importan
+grep -r "import.*archivo" . --include="*.py" | grep -v "archivo.py"
+```
+
+### **Buscar Funciones No Utilizadas**:
+```bash
+# Buscar funciones que no se llaman
+grep -r "funcion_nombre" . --include="*.py" | grep -v "def funcion_nombre"
+```
+
+### **Crear Test de Verificación**:
+```python
+# Template para test de función a eliminar
+def test_funcion_eliminar_verificacion():
+    """Verificar que eliminar la función no rompe el sistema"""
+    # Test específico para la función marcada
+    pass
+```
+
+## 🎯 PRINCIPIOS DE MANTENIMIENTO
+
+### ✅ **SÍ HACER**:
+- **Mover archivos muertos** a `.borrar/`
+- **Renombrar funciones** antes de eliminar
+- **Crear tests** de verificación
+- **Advertir** antes de eliminar
+- **Documentar** el proceso de limpieza
+
+### ❌ **NO HACER**:
+- **Eliminar directamente** sin verificar
+- **Crear scripts sueltos** fuera del flujo
+- **Ignorar dependencias** ocultas
+- **Saltarse el proceso** de verificación
+
+---
+
+**Esta regla define los estándares para mantener el código limpio y organizado en el proyecto iaBoletin.**

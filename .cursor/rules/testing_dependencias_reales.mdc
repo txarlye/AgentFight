@@ -1,0 +1,222 @@
+---
+description: Reglas para testing con dependencias reales de la aplicación
+globs: ["**/tests/**"]
+alwaysApply: true
+---
+
+# TESTING CON DEPENDENCIAS REALES
+
+## 🎯 PRINCIPIO FUNDAMENTAL
+
+**TODOS LOS TESTS DEBEN USAR LAS MISMAS DEPENDENCIAS QUE LA APLICACIÓN PRINCIPAL**
+
+## 🚫 PROHIBICIONES ABSOLUTAS
+
+### **NUNCA CREAR TESTS "SIN DEPENDENCIAS":**
+- ❌ Tests sin spaCy cuando la app usa spaCy
+- ❌ Tests sin transformers cuando la app usa transformers
+- ❌ Tests sin dependencias de IA cuando la app las usa
+- ❌ Versiones "simplificadas" que no prueban funcionalidad real
+
+### **NUNCA INVENTAR ALTERNATIVAS:**
+- ❌ "test_sin_spacy.py" cuando la app usa spaCy
+- ❌ "test_simple.py" que no prueba el flujo real
+- ❌ Mocks que no reflejan el comportamiento real
+- ❌ Versiones "light" de funcionalidades core
+
+## ✅ PROTOCOLO CORRECTO
+
+### **1. VERIFICAR DEPENDENCIAS:**
+```python
+# SIEMPRE verificar que las dependencias están disponibles
+try:
+    import spacy
+    import transformers
+    # ... otras dependencias de la app
+except ImportError as e:
+    print(f"⚠️ DEPENDENCIA NO DISPONIBLE: {e}")
+    print("Entorno requerido: iaBoa_gpu")
+    print("El usuario debe ejecutar este test en el entorno correcto")
+    sys.exit(1)
+```
+
+### **2. USAR ENTORNO CORRECTO:**
+- **Entorno de la app**: iaBoa_gpu
+- **Dependencias**: Las mismas que usa la app principal
+- **Configuración**: La misma que usa la app principal
+
+### **3. AVISAR SI NO SE PUEDE EJECUTAR:**
+```python
+def verificar_entorno():
+    """Verifica que el entorno tiene las dependencias necesarias"""
+    dependencias_requeridas = [
+        'spacy', 'transformers', 'torch', 'numpy', 
+        'pandas', 'scikit-learn', 'langchain'
+    ]
+    
+    faltantes = []
+    for dep in dependencias_requeridas:
+        try:
+            __import__(dep)
+        except ImportError:
+            faltantes.append(dep)
+    
+    if faltantes:
+        print("⚠️ DEPENDENCIAS FALTANTES:")
+        for dep in faltantes:
+            print(f"  - {dep}")
+        print("\nEntorno requerido: iaBoa_gpu")
+        print("El usuario debe ejecutar este test en el entorno correcto")
+        return False
+    
+    return True
+```
+
+## 🎯 EJEMPLOS CORRECTOS
+
+### **Test de Patrones (CORRECTO):**
+```python
+#!/usr/bin/env python3
+"""
+Test de patrones usando las mismas dependencias que la app
+"""
+
+import spacy
+from spacy.matcher import Matcher
+from settings.settings import settings
+from procesamiento.Agentes.agente_patrones import crear_agente_patrones
+
+def test_generacion_patrones():
+    """Test real de generación de patrones"""
+    # Usar spaCy como la app principal
+    nlp = spacy.load("es_core_news_sm")
+    matcher = Matcher(nlp.vocab)
+    
+    # Usar las mismas funciones que la app
+    agente = crear_agente_patrones()
+    # ... resto del test
+```
+
+### **Test de IA (CORRECTO):**
+```python
+#!/usr/bin/env python3
+"""
+Test de agentes de IA usando las mismas dependencias
+"""
+
+import torch
+from transformers import AutoTokenizer, AutoModel
+from procesamiento.Agentes.agente_patrones import PatronAgent
+
+def test_agente_ia():
+    """Test real del agente de IA"""
+    # Usar las mismas dependencias que la app
+    tokenizer = AutoTokenizer.from_pretrained("modelo")
+    model = AutoModel.from_pretrained("modelo")
+    
+    # Usar las mismas funciones que la app
+    agente = PatronAgent()
+    # ... resto del test
+```
+
+## 🚫 EJEMPLOS INCORRECTOS
+
+### **Test "Sin Dependencias" (INCORRECTO):**
+```python
+# ❌ NUNCA HACER ESTO
+def test_sin_spacy():
+    """Test que no usa spaCy cuando la app lo usa"""
+    # Esto no prueba la funcionalidad real
+    pass
+```
+
+### **Test "Simplificado" (INCORRECTO):**
+```python
+# ❌ NUNCA HACER ESTO
+def test_simple():
+    """Test simplificado que no refleja el comportamiento real"""
+    # Esto no prueba el flujo real de la app
+    pass
+```
+
+## 🔧 PROTOCOLO DE TESTING
+
+### **Paso 1: Verificar Dependencias**
+```python
+def verificar_dependencias():
+    """Verifica que todas las dependencias están disponibles"""
+    dependencias = ['spacy', 'transformers', 'torch', 'numpy']
+    for dep in dependencias:
+        try:
+            __import__(dep)
+        except ImportError:
+            print(f"❌ Dependencia faltante: {dep}")
+            return False
+    return True
+```
+
+### **Paso 2: Usar Entorno Correcto**
+- **Entorno**: iaBoa_gpu
+- **Dependencias**: Las mismas que la app principal
+- **Configuración**: La misma que la app principal
+
+### **Paso 3: Avisar si No Se Puede Ejecutar**
+```python
+if not verificar_dependencias():
+    print("⚠️ DEPENDENCIAS FALTANTES")
+    print("Entorno requerido: iaBoa_gpu")
+    print("El usuario debe ejecutar este test en el entorno correcto")
+    sys.exit(1)
+```
+
+## 📋 CHECKLIST DE TESTING
+
+### **Antes de crear un test:**
+- [ ] ¿Usa las mismas dependencias que la app?
+- [ ] ¿Prueba la funcionalidad real?
+- [ ] ¿Se puede ejecutar en iaBoa_gpu?
+- [ ] ¿No inventa alternativas "simplificadas"?
+
+### **Si no se puede ejecutar:**
+- [ ] ¿Avisa al usuario?
+- [ ] ¿Explica el problema del entorno?
+- [ ] ¿Pide que ejecute en iaBoa_gpu?
+
+## 🎯 PRINCIPIOS FUNDAMENTALES
+
+### **1. Testing Real:**
+- Usar las mismas dependencias
+- Probar la funcionalidad real
+- Ejecutar en el entorno correcto
+
+### **2. No Inventar Alternativas:**
+- No crear versiones "sin dependencias"
+- No simplificar funcionalidades core
+- No usar mocks que no reflejan la realidad
+
+### **3. Comunicación Clara:**
+- Avisar si no se puede ejecutar
+- Explicar el problema del entorno
+- Pedir al usuario que ejecute en iaBoa_gpu
+
+## 🚀 COMANDOS ÚTILES
+
+### **Verificar Dependencias:**
+```bash
+# Verificar que spaCy está disponible
+python -c "import spacy; print('spaCy disponible')"
+
+# Verificar que transformers está disponible
+python -c "import transformers; print('transformers disponible')"
+```
+
+### **Ejecutar en Entorno Correcto:**
+```bash
+# Ejecutar en iaBoa_gpu
+conda activate iaBoa_gpu
+python tests/Patrones/test_patrones_real.py
+```
+
+---
+
+**Esta regla garantiza que todos los tests prueben la funcionalidad real de la aplicación.**

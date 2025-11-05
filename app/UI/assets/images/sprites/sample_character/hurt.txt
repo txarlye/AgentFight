@@ -1,0 +1,3 @@
+# HURT SPRITE - Rosa
+# Este es un sprite de muestra para hurt
+# Reemplaza este archivo con un PNG real

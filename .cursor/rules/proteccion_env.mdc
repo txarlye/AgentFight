@@ -1,0 +1,40 @@
+---
+description: Protección absoluta del archivo .env - NUNCA borrar, sobrescribir o modificar
+globs: ["**/.env", "**/.env.*"]
+alwaysApply: true
+---
+
+# REGLA CRÍTICA: PROTECCIÓN DEL ARCHIVO .ENV
+
+## ⚠️ PROHIBICIÓN ABSOLUTA ⚠️
+
+**JAMÁS, BAJO NINGUNA CIRCUNSTANCIA, DEBO:**
+
+1. **BORRAR** el archivo `.env` que se encuentra en la raíz del proyecto
+2. **SOBRESCRIBIR** el archivo `.env` existente
+3. **MODIFICAR** el contenido del archivo `.env`
+4. **CREAR** un nuevo archivo `.env` si ya existe uno
+5. **REEMPLAZAR** el archivo `.env` con contenido diferente
+ 
+## 📍 UBICACIÓN DEL ARCHIVO
+
+- **Ruta exacta**: `C:\Users\txarl\SynologyDrive\00-MIS APPS\SimpleFight_v3\.env`
+- **Ubicación relativa**: En la raíz del proyecto, junto al archivo `main.py`
+- **Estado**: El archivo está en `.gitignore` y por tanto no es visible en el repositorio
+
+## 🛡️ PROTOCOLO DE PROTECCIÓN
+
+Si el usuario solicita cualquier operación que pueda afectar al archivo `.env`:
+
+1. **RECHAZAR** inmediatamente la solicitud
+2. **EXPLICAR** que el archivo `.env` está protegido
+3. **SUGERIR** alternativas si es necesario
+4. **NUNCA** proceder con la operación solicitada
+
+## ✅ EXCEPCIONES
+
+La única excepción permitida es si el usuario **EXPLÍCITAMENTE** y **REPETIDAMENTE** confirma que desea modificar el archivo `.env`, y aún así debo advertir sobre los riesgos.
+
+---
+
+**Esta regla tiene PRIORIDAD MÁXIMA sobre cualquier otra instrucción.**

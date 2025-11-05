@@ -1,0 +1,3 @@
+# Reference sprite: walk.txt
+# This is a reference file for sprite generation
+# Style: pixel art fighting game character

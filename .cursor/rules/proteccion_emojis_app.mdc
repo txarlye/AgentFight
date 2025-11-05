@@ -1,0 +1,130 @@
+---
+description: Protección de emojis en funciones principales de la aplicación
+globs: ["**/settings/**", "**/procesamiento/**", "**/main.py"]
+alwaysApply: true
+---
+
+# PROTECCIÓN DE EMOJIS EN FUNCIONES PRINCIPALES
+
+## 🚫 PROHIBICIÓN ABSOLUTA
+
+**NUNCA, BAJO NINGUNA CIRCUNSTANCIA, DEBO:**
+
+1. **MODIFICAR** emojis en funciones principales de la aplicación
+2. **CAMBIAR** prints con emojis en archivos del sistema principal
+3. **ALTERAR** mensajes de estado en `settings.py`, `cola_procesamiento_ia.py`, etc.
+4. **REEMPLAZAR** emojis por texto plano en funciones core
+
+## 📍 ARCHIVOS PROTEGIDOS
+
+### **Archivos CRÍTICOS que NUNCA modificar:**
+- `settings/settings.py` - Mensajes de inicialización
+- `procesamiento/Agentes/cola_procesamiento_ia.py` - Mensajes de estado
+- `procesamiento/utilidades/escritor_archivos.py` - Mensajes de thread
+- `main.py` - Mensajes principales
+- Cualquier archivo en `procesamiento/` con mensajes de estado
+
+### **Emojis que FUNCIONAN en la app principal:**
+- ✅ `\u2705` - Check mark
+- ⚠️ `\u26a0\ufe0f` - Warning sign
+- 🔄 `\u1f504` - Counterclockwise arrows
+- 📁 `\u1f4c1` - File folder
+- 🧵 `\u1f9f5` - Thread
+- 📝 `\u1f4dd` - Memo
+- 🎯 `\u1f3af` - Direct hit
+- 💾 `\u1f4be` - Floppy disk
+
+## ⚠️ PROBLEMA DE ENTORNO
+
+### **El problema NO es el código:**
+- Los emojis funcionan perfectamente en la app principal
+- El problema es el entorno de testing (Windows PowerShell)
+- La app principal usa un entorno diferente (iaBoa_gpu)
+
+### **Solución correcta:**
+- **NO modificar** el código de la app
+- **Usar** el entorno correcto (iaBoa_gpu) para testing
+- **Avisar** al usuario si no se puede ejecutar en el entorno actual
+
+## 🎯 REGLAS DE TESTING
+
+### ✅ **SÍ HACER:**
+- Crear tests que usen las mismas dependencias que la app
+- Usar spaCy, transformers, etc. si la app los usa
+- Ejecutar en el entorno correcto (iaBoa_gpu)
+- Avisar si no se puede ejecutar en el entorno actual
+
+### ❌ **NO HACER:**
+- Crear tests "sin dependencias" que no prueben la funcionalidad real
+- Modificar emojis en funciones principales
+- Cambiar mensajes de estado del sistema
+- Inventar alternativas que no prueben el flujo real
+
+## 🔧 PROTOCOLO DE TESTING
+
+### **Antes de crear un test:**
+1. **Verificar** que las dependencias están disponibles
+2. **Usar** el entorno correcto (iaBoa_gpu)
+3. **Si no se puede ejecutar** → Avisar al usuario
+4. **NO crear** versiones "sin dependencias"
+
+### **Mensaje de aviso estándar:**
+```
+⚠️ DEPENDENCIA NO DISPONIBLE
+
+Test: [nombre_del_test]
+Dependencia: [spacy, transformers, etc.]
+Entorno requerido: iaBoa_gpu
+Acción: El usuario debe ejecutar el test en el entorno correcto
+
+¿Ejecutar en iaBoa_gpu? (Sí/No)
+```
+
+## 📋 CHECKLIST DE PROTECCIÓN
+
+### **Antes de modificar cualquier archivo:**
+- [ ] ¿Es un archivo principal del sistema?
+- [ ] ¿Contiene emojis que funcionan en la app?
+- [ ] ¿Es parte del core de la aplicación?
+- [ ] ¿Se puede evitar la modificación?
+
+### **Si es necesario modificar:**
+- [ ] ¿Es solo para testing temporal?
+- [ ] ¿Se puede revertir fácilmente?
+- [ ] ¿No afecta la funcionalidad principal?
+
+## 🚀 COMANDOS ÚTILES
+
+### **Verificar emojis en archivos:**
+```bash
+# Buscar emojis en archivos principales
+grep -r "\\u[0-9a-fA-F]" settings/ procesamiento/ main.py
+```
+
+### **Revertir cambios de emojis:**
+```bash
+# Revertir cambios en archivos específicos
+git checkout -- settings/settings.py
+git checkout -- procesamiento/Agentes/cola_procesamiento_ia.py
+```
+
+## 🎯 PRINCIPIOS FUNDAMENTALES
+
+### **1. La app principal es SAGRADA:**
+- No modificar emojis que funcionan
+- No alterar mensajes de estado
+- No cambiar funcionalidad core
+
+### **2. Testing real:**
+- Usar las mismas dependencias
+- Ejecutar en el entorno correcto
+- Probar la funcionalidad real
+
+### **3. Comunicación clara:**
+- Avisar si no se puede ejecutar
+- Explicar el problema del entorno
+- Pedir al usuario que ejecute en iaBoa_gpu
+
+---
+
+**Esta regla protege la integridad de la aplicación principal y garantiza testing real.**

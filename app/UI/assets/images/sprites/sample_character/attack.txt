@@ -1,0 +1,3 @@
+# ATTACK SPRITE - Rojo
+# Este es un sprite de muestra para attack
+# Reemplaza este archivo con un PNG real

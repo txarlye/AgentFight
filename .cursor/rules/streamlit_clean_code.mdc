@@ -1,0 +1,420 @@
+---
+description: Reglas de Clean Code para desarrollo Streamlit - Arquitectura, patrones y mejores prácticas
+globs: ["**/UI/Streamlit/**/*.py", "**/streamlit*.py", "**/.streamlit/**"]
+alwaysApply: false
+---
+
+# 🧹 CLEAN CODE PARA STREAMLIT - iaBoletin
+
+## 🏗️ ARQUITECTURA Y ORGANIZACIÓN
+
+### Estructura de Directorios
+```
+procesamiento/UI/
+├── console_ui.py            # UI de consola
+├── console_ui_rich.py       # UI de consola con Rich
+├── gradio_ui.py             # UI alternativa Gradio
+└── Streamlit/               # TODO lo relacionado con Streamlit
+    ├── __init__.py
+    ├── streamlit_ui.py      # Punto de entrada principal (movido aquí)
+    ├── .streamlit/          # Configuración de Streamlit
+    │   └── config.toml      # Configuración del servidor
+    ├── components/          # Componentes reutilizables
+    │   ├── __init__.py
+    │   ├── navigation.py    # Menús y barra lateral
+    │   ├── boletin_card.py  # Tarjetas de boletines
+    │   └── data_table.py    # Tablas de datos
+    ├── pages/               # Páginas específicas
+    │   ├── __init__.py
+    │   ├── guardar_boa.py
+    │   ├── procesar_boa.py
+    │   └── utilidades.py
+    ├── utils/               # Utilidades UI
+    │   ├── __init__.py
+    │   ├── styling.py       # CSS y estilos
+    │   ├── helpers.py       # Funciones auxiliares
+    │   └── logging.py       # Sistema de logging
+    └── [archivos existentes]
+        ├── check_boa.py
+        ├── gestor_patrones.py
+        ├── boa_utils.py
+        └── config_check_boa.py
+```
+
+### Principios de Organización
+- **Separación de responsabilidades**: Cada archivo tiene una responsabilidad específica
+- **Componentes reutilizables**: Crear funciones modulares para UI
+- **Configuración centralizada**: Usar settings singleton para configuración
+- **Páginas modulares**: Cada funcionalidad en su propio archivo
+- **UI encapsulada**: Todo lo de Streamlit dentro de `procesamiento/UI/Streamlit/`
+- **Configuración local**: `.streamlit/` dentro de la carpeta Streamlit
+
+### Gestión de Configuración
+```python
+# ✅ CORRECTO - Usar settings singleton
+from settings import settings
+
+# Acceder a configuración
+settings.OBJETOS_A_ENCONTRAR
+settings.procesamiento_paralelo
+settings.max_workers
+
+# ❌ INCORRECTO - No duplicar con gestion_config.py
+# gestion_config.py es redundante si ya tienes settings
+```
+
+### Configuraciones Específicas
+```python
+# ✅ CORRECTO - Configuración específica para funcionalidades
+# config_check_boa.py - Solo para Check BOA
+class ConfigCheckBOA:
+    BOA_URL = "https://www.boa.aragon.es/#/"
+    RUTAS_ARCHIVOS = {...}
+
+# ❌ INCORRECTO - No crear gestion_config.py genérico
+# Ya tienes settings para eso
+```
+
+### Organización de Utils
+```python
+# utils/helpers.py - Funciones auxiliares generales
+def formatear_fecha(fecha):
+    """Formatea fecha para mostrar en UI"""
+    return fecha.strftime("%d/%m/%Y")
+
+def validar_entrada_usuario(entrada):
+    """Valida entrada del usuario"""
+    return entrada.strip() if entrada else None
+
+# utils/styling.py - CSS y estilos
+def aplicar_estilos_principales():
+    """Aplica estilos CSS principales"""
+    st.markdown("""<style>...</style>""", unsafe_allow_html=True)
+
+def crear_tema_personalizado():
+    """Crea tema personalizado para componentes"""
+
+# utils/logging.py - Sistema de logging
+def configurar_logging_streamlit():
+    """Configura logging específico para Streamlit"""
+```
+
+### Organización de Navigation
+```python
+# components/navigation.py - Menús y navegación
+def crear_sidebar_navegacion():
+    """Crea barra lateral de navegación"""
+    with st.sidebar:
+        st.title("🏠 iaBoletin")
+        # Menú de navegación
+        
+def crear_menu_principal():
+    """Crea menú principal horizontal"""
+    # Botones de navegación principal
+    
+def mostrar_breadcrumbs():
+    """Muestra ruta de navegación actual"""
+```
+
+## 📝 CONVENCIONES DE CÓDIGO
+
+### Nomenclatura
+```python
+# ✅ CORRECTO
+def mostrar_seccion_guardar_boa():
+def procesar_con_logs(fecha, nlp, tipo_procesamiento):
+def setup_page():
+
+# ❌ INCORRECTO  
+def show_boa():
+def process_data():
+def init():
+```
+
+### Estructura de Funciones
+```python
+def funcion_streamlit(parametros):
+    """
+    Descripción clara de la función.
+    
+    Args:
+        parametros: Descripción de parámetros
+        
+    Returns:
+        Descripción del retorno
+    """
+    # 1. Validaciones iniciales
+    if not parametros:
+        st.error("Error: parámetros requeridos")
+        return
+    
+    # 2. Configuración de estado
+    if 'key' not in st.session_state:
+        st.session_state['key'] = valor_default
+    
+    # 3. Lógica principal
+    try:
+        resultado = procesar_datos(parametros)
+        st.success("Procesamiento exitoso")
+        return resultado
+    except Exception as e:
+        st.error(f"Error: {str(e)}")
+        return None
+```
+
+## 🎨 PATRONES DE UI
+
+### Gestión de Estado
+```python
+# ✅ CORRECTO - Inicialización segura
+if 'seccion_activa' not in st.session_state:
+    st.session_state['seccion_activa'] = 'Guardar BOA'
+
+# ✅ CORRECTO - Actualización de estado
+if st.button("Nueva Sección"):
+    st.session_state['seccion_activa'] = 'Nueva Sección'
+    st.rerun()
+```
+
+### Manejo de Errores
+```python
+# ✅ CORRECTO - Manejo robusto
+try:
+    resultado = operacion_critica()
+    st.success("Operación exitosa")
+except FileNotFoundError:
+    st.error("Archivo no encontrado")
+except Exception as e:
+    st.error(f"Error inesperado: {str(e)}")
+    st.exception(e)  # Para debugging
+```
+
+### Caching Inteligente
+```python
+# ✅ CORRECTO - Cache para operaciones costosas
+@st.cache_data(ttl=3600)  # 1 hora
+def cargar_datos_boa(fecha):
+    return procesar_archivos_boa(fecha)
+
+# ✅ CORRECTO - Cache de recursos
+@st.cache_resource
+def cargar_modelo_nlp():
+    return spacy.load("es_core_news_sm")
+```
+
+## 🔧 COMPONENTES REUTILIZABLES
+
+### Estructura de Componentes
+```python
+def crear_componente_boletin(titulo, datos, acciones):
+    """
+    Componente reutilizable para mostrar boletines.
+    
+    Args:
+        titulo: Título del boletín
+        datos: DataFrame con datos
+        acciones: Lista de acciones disponibles
+    """
+    with st.container():
+        st.subheader(titulo)
+        
+        # Mostrar datos
+        if not datos.empty:
+            st.dataframe(datos, use_container_width=True)
+            
+            # Botones de acción
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                if st.button("Procesar", key=f"proc_{titulo}"):
+                    procesar_boletin(datos)
+            with col2:
+                if st.button("Exportar", key=f"exp_{titulo}"):
+                    exportar_datos(datos)
+        else:
+            st.info("No hay datos disponibles")
+```
+
+### CSS Personalizado
+```python
+def aplicar_estilos_personalizados():
+    """Aplica estilos CSS personalizados de forma consistente."""
+    st.markdown("""
+    <style>
+    .custom-header {
+        font-size: 2rem;
+        color: #1f77b4;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    .success-box {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        border-radius: 0.375rem;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+```
+
+## ⚡ OPTIMIZACIÓN DE RENDIMIENTO
+
+### Lazy Loading
+```python
+# ✅ CORRECTO - Carga condicional
+def mostrar_seccion_pesada():
+    if st.session_state.get('cargar_seccion_pesada', False):
+        with st.spinner("Cargando datos..."):
+            datos = cargar_datos_grandes()
+            mostrar_resultados(datos)
+    else:
+        if st.button("Cargar sección"):
+            st.session_state['cargar_seccion_pesada'] = True
+            st.rerun()
+```
+
+### Gestión de Memoria
+```python
+# ✅ CORRECTO - Limpieza de memoria
+def limpiar_cache_antiguo():
+    """Limpia cache antiguo para liberar memoria."""
+    if 'cache_timestamp' in st.session_state:
+        if time.time() - st.session_state['cache_timestamp'] > 3600:
+            st.cache_data.clear()
+            st.session_state['cache_timestamp'] = time.time()
+```
+
+## 🧪 TESTING Y DEBUGGING
+
+### Logging Estructurado
+```python
+import logging
+
+def configurar_logging():
+    """Configura logging para debugging."""
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+    return logging.getLogger(__name__)
+
+def debug_streamlit():
+    """Función de debugging para Streamlit."""
+    if st.checkbox("Modo Debug"):
+        st.write("Session State:", st.session_state)
+        st.write("Cache Info:", st.cache_data.get_stats())
+```
+
+## 🔄 PLAN DE MIGRACIÓN
+
+### Fase 1: Reorganización de Estructura
+```bash
+# 1. Mover archivos existentes
+mv procesamiento/UI/streamlit_ui.py procesamiento/UI/Streamlit/
+mv .streamlit/ procesamiento/UI/Streamlit/
+
+# 2. Crear nueva estructura
+mkdir -p procesamiento/UI/Streamlit/components
+mkdir -p procesamiento/UI/Streamlit/pages  
+mkdir -p procesamiento/UI/Streamlit/utils
+
+# 3. Actualizar imports en main.py
+# Cambiar: from procesamiento.UI.streamlit_ui import StreamlitUI
+# Por:     from procesamiento.UI.Streamlit.streamlit_ui import StreamlitUI
+```
+
+### Fase 2: Extracción de Componentes
+```python
+# Extraer de streamlit_ui.py (1935 líneas) a componentes:
+
+# components/navigation.py
+def crear_sidebar_navegacion():
+    """Extraer lógica de navegación del archivo principal"""
+    
+# components/boletin_card.py  
+def crear_tarjeta_boletin(datos):
+    """Extraer lógica de tarjetas de boletines"""
+    
+# utils/styling.py
+def aplicar_estilos_principales():
+    """Extraer CSS del archivo principal"""
+```
+
+### Fase 3: Separación de Páginas
+```python
+# pages/guardar_boa.py
+def mostrar_seccion_guardar_boa():
+    """Extraer sección de guardar BOA"""
+
+# pages/procesar_boa.py  
+def mostrar_seccion_procesar_boa(nlp):
+    """Extraer sección de procesar BOA"""
+```
+
+## 🚫 ANTI-PATRONES A EVITAR
+
+### ❌ INCORRECTO
+```python
+# Evitar: Código monolítico
+def main():
+    st.title("App")
+    # 500 líneas de código aquí...
+    
+# Evitar: Variables globales
+global_variable = "valor"
+
+# Evitar: Sin manejo de errores
+resultado = operacion_peligrosa()
+
+# Evitar: Sin caching
+def procesar_datos():
+    return operacion_costosa()  # Se ejecuta cada vez
+```
+
+### ✅ CORRECTO
+```python
+# Modular y organizado
+class StreamlitApp:
+    def __init__(self):
+        self.setup_page()
+        self.configurar_logging()
+    
+    def setup_page(self):
+        st.set_page_config(page_title="iaBoletin", layout="wide")
+    
+    def ejecutar(self):
+        self.mostrar_navegacion()
+        self.mostrar_contenido()
+
+# Configuración centralizada
+@st.cache_data
+def cargar_configuracion():
+    return settings.get_config()
+
+# Manejo robusto de errores
+try:
+    resultado = operacion_peligrosa()
+except Exception as e:
+    st.error(f"Error: {e}")
+    return None
+```
+
+## 📋 CHECKLIST DE CALIDAD
+
+### Antes de Commit
+- [ ] Funciones con docstrings claros
+- [ ] Manejo de errores implementado
+- [ ] Caching aplicado donde corresponde
+- [ ] Estado de sesión manejado correctamente
+- [ ] Componentes reutilizables
+- [ ] CSS organizado y consistente
+- [ ] Logging configurado
+- [ ] Sin variables globales
+- [ ] Código modular y legible
+
+### Patrones Específicos iaBoletin
+- [ ] Usar `settings` singleton para configuración
+- [ ] Integrar con `spaCy` para procesamiento NLP
+- [ ] Mantener compatibilidad con BOA/BOE
+- [ ] Preservar funcionalidad existente
+- [ ] Usar `st.session_state` para estado persistente

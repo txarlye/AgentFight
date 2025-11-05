@@ -1,0 +1,281 @@
+---
+description: Estándares para organización y creación de tests - Estructura de carpetas y nomenclatura
+globs: ["**/tests/**", "**/test_*.py", "**/*_test.py"]
+alwaysApply: true
+---
+
+# ESTÁNDARES PARA TESTS
+
+## 📁 ESTRUCTURA DE CARPETAS
+
+### **Ubicación Principal**:
+- **Todos los tests** deben estar en `tests/`
+- **Organización por categorías** en subcarpetas específicas
+- **Nomenclatura clara** para identificar el propósito
+
+### **Estructura Recomendada**:
+```
+tests/
+├── Agents/                    # Tests de agentes de IA
+│   ├── test_ollama_*.py
+│   ├── test_gemini_*.py
+│   └── test_langsmith_*.py
+├── UI/                       # Tests de interfaz de usuario
+│   ├── test_streamlit_*.py
+│   ├── test_console_*.py
+│   └── test_gradio_*.py
+├── BBDD/                     # Tests de base de datos
+│   ├── test_cargar_*.py
+│   ├── test_guardar_*.py
+│   └── test_municipios_*.py
+├── Procesamiento/            # Tests de procesamiento general
+│   ├── test_paralelo_*.py
+│   ├── test_boe_*.py
+│   └── test_boa_*.py
+├── Patrones/                 # Tests de sistema de patrones
+│   ├── test_patrones_*.py
+│   ├── test_memoria_*.py
+│   └── test_guardado_*.py
+├── Entidades/                # Tests de extracción de entidades
+│   ├── test_municipio_*.py
+│   ├── test_expediente_*.py
+│   └── test_promotor_*.py
+└── Integration/              # Tests de integración
+    ├── test_completo_*.py
+    ├── test_flow_*.py
+    └── test_sistema_*.py
+```
+
+## 🎯 CATEGORÍAS DE TESTS
+
+### **1. Agents** - Tests de Agentes de IA:
+- Tests de Ollama, Gemini, OpenAI
+- Tests de LangSmith
+- Tests de configuración de agentes
+- Tests de límites de consumo
+
+### **2. UI** - Tests de Interfaz de Usuario:
+- Tests de Streamlit
+- Tests de consola
+- Tests de Gradio
+- Tests de componentes UI
+
+### **3. BBDD** - Tests de Base de Datos:
+- Tests de carga de datos
+- Tests de guardado
+- Tests de municipios
+- Tests de conexión
+
+### **4. Procesamiento** - Tests de Procesamiento:
+- Tests de procesamiento paralelo
+- Tests de BOE/BOA
+- Tests de automatización
+- Tests de rendimiento
+
+### **5. Patrones** - Tests de Sistema de Patrones:
+- Tests de patrones
+- Tests de memoria
+- Tests de guardado
+- Tests de categorización
+
+### **6. Entidades** - Tests de Extracción:
+- Tests de municipios
+- Tests de expedientes
+- Tests de promotores
+- Tests de rangos
+
+### **7. Integration** - Tests de Integración:
+- Tests completos del sistema
+- Tests de flujo end-to-end
+- Tests de integración con servicios externos
+
+## 📝 NOMENCLATURA DE ARCHIVOS
+
+### **Patrón de Nombres**:
+```python
+# Tests específicos
+test_[categoria]_[funcionalidad].py
+test_[categoria]_[componente]_[accion].py
+
+# Ejemplos:
+test_agents_ollama_config.py
+test_ui_streamlit_sidebar.py
+test_bbdd_cargar_municipios.py
+test_procesamiento_paralelo_boe.py
+test_patrones_memoria_guardado.py
+test_entidades_expediente_extraccion.py
+test_integration_completo_sistema.py
+```
+
+### **Tests de Debug/Diagnóstico**:
+```python
+# Tests de debug específicos
+test_debug_[categoria]_[problema].py
+test_diagnostico_[componente].py
+
+# Ejemplos:
+test_debug_agents_ollama_404.py
+test_diagnostico_paralelo_procesamiento.py
+```
+
+## 🔧 CREACIÓN DE NUEVOS TESTS
+
+### **Proceso Obligatorio**:
+
+1. **Identificar Categoría**:
+   - ¿Qué componente se está testeando?
+   - ¿Existe subcarpeta apropiada?
+
+2. **Crear Subcarpeta si es Necesario**:
+   ```bash
+   # Si no existe categoría apropiada
+   mkdir tests/NuevaCategoria
+   ```
+
+3. **Crear Archivo de Test**:
+   ```python
+   # tests/[Categoria]/test_[categoria]_[funcionalidad].py
+   ```
+
+4. **Seguir Estructura de Test**:
+   ```python
+   import unittest
+   import sys
+   import os
+   
+   # Añadir ruta del proyecto
+   sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+   
+   class TestCategoriaFuncionalidad(unittest.TestCase):
+       def setUp(self):
+           # Configuración inicial
+           pass
+       
+       def test_funcionalidad_especifica(self):
+           # Test específico
+           pass
+       
+       def tearDown(self):
+           # Limpieza
+           pass
+   
+   if __name__ == '__main__':
+       unittest.main()
+   ```
+
+## 📋 ESTRUCTURA DE TEST
+
+### **Template Estándar**:
+```python
+"""
+Test para [Categoria] - [Funcionalidad]
+Descripción clara del propósito del test
+"""
+
+import unittest
+import sys
+import os
+from unittest.mock import patch, MagicMock
+
+# Añadir ruta del proyecto
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Imports específicos del proyecto
+from settings.settings import settings
+# from procesamiento.[modulo] import [clase]
+
+class TestCategoriaFuncionalidad(unittest.TestCase):
+    """Tests para [categoria] - [funcionalidad]"""
+    
+    def setUp(self):
+        """Configuración inicial para cada test"""
+        # Configuración común
+        pass
+    
+    def tearDown(self):
+        """Limpieza después de cada test"""
+        # Limpieza común
+        pass
+    
+    def test_funcionalidad_basica(self):
+        """Test de funcionalidad básica"""
+        # Arrange
+        # Act
+        # Assert
+        pass
+    
+    def test_caso_error(self):
+        """Test de manejo de errores"""
+        # Test de casos de error
+        pass
+    
+    def test_caso_limite(self):
+        """Test de casos límite"""
+        # Test de casos límite
+        pass
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+## 🎯 REGLAS ESPECÍFICAS
+
+### **Para Tests de Agentes**:
+- Usar mocks para llamadas a IA
+- Testear límites de consumo
+- Verificar configuración de proveedores
+
+### **Para Tests de UI**:
+- Usar Streamlit testing utilities
+- Testear componentes por separado
+- Verificar estados de la interfaz
+
+### **Para Tests de BBDD**:
+- Usar base de datos de prueba
+- Limpiar datos después de cada test
+- Testear transacciones
+
+### **Para Tests de Procesamiento**:
+- Testear procesamiento paralelo vs secuencial
+- Verificar rendimiento
+- Testear manejo de errores
+
+### **Para Tests de Patrones**:
+- Testear memoria de patrones
+- Verificar persistencia
+- Testear categorización
+
+## ✅ CHECKLIST PARA NUEVOS TESTS
+
+- [ ] ¿Está en la carpeta `tests/`?
+- [ ] ¿Está en la subcarpeta correcta?
+- [ ] ¿Sigue la nomenclatura `test_[categoria]_[funcionalidad].py`?
+- [ ] ¿Tiene docstring descriptivo?
+- [ ] ¿Incluye setUp y tearDown?
+- [ ] ¿Testea casos básicos, errores y límites?
+- [ ] ¿Usa mocks apropiados?
+- [ ] ¿Limpia recursos después del test?
+
+## 🚀 COMANDOS ÚTILES
+
+### **Ejecutar Tests**:
+```bash
+# Test específico
+python tests/[categoria]/test_[nombre].py
+
+# Todos los tests de una categoría
+python -m unittest tests.[categoria].*
+
+# Todos los tests
+python -m unittest discover tests/
+```
+
+### **Crear Nueva Categoría**:
+```bash
+mkdir tests/NuevaCategoria
+touch tests/NuevaCategoria/__init__.py
+```
+
+---
+
+**Esta regla define la organización y estándares para tests en el proyecto iaBoletin.**
