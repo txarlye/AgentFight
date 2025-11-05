@@ -10,11 +10,12 @@
 
 ## 🚀 **Funcionalidades Principales**
 
-AgentFight es un juego de combate 2D con generación de contenido mediante IA. El juego incluye:
+AgentFight es un juego de combate 2D con generación de contenido mediante IA. 
+El juego incluye:
 
-- ✅ **Sistema de combate** con físicas realistas y controles responsivos
+- ✅ **Sistema de combate** con físicas y controles 
 - ✅ **Generación de personajes** con IA (Ollama/OpenAI)
-- ✅ **Generación de imágenes** con Stable Diffusion SDXL Turbo
+- ✅ **Generación de imágenes** con Stable Diffusion SDXL Turbo o con openai
 - ✅ **Narrativa personalizada** generada por IA
 - ✅ **Pantalla de configuración** para ajustar opciones de IA
 - ✅ **Trazabilidad completa** con LangSmith
@@ -53,7 +54,7 @@ El juego soporta múltiples proveedores de IA mediante un sistema modular:
 - ✅ **Fondos**: Generación automática de fondos de combate
 
 ### **Pantalla de Configuración de IA** 🆕
-Nueva pantalla accesible desde el menú principal (`[4] Settings`) que permite configurar:
+pantalla accesible desde el menú principal (`[4] Settings`) que permite configurar:
 
 1. **Generar personajes con IA** (Sí/No)
    - Si NO: Usa personajes de test locales
